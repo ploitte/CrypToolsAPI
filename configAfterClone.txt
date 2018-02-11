@@ -1,0 +1,14 @@
+
+
+1. Composer install
+2. Composer update
+3. .env
+
+    -localhost
+    -Username: Root
+    -Password: null
+    -dbName: cryptools
+    -API_PREFIX=api
+
+4. php artisan jwt:secret
+5. LETS BEGIN
