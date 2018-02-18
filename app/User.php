@@ -50,4 +50,8 @@ class User extends Authenticatable implements JWTSubject
     }
 
 
+    public function favoris(){
+        return $this->hasMany("App\Favoris");
+    }
+
 }

@@ -18,17 +18,31 @@ $api = app('Dingo\Api\Routing\Router');
 
 
 
-//Auth
+
 $api->version("v1", function($api){
 
+
+    //ForAdmin
+    $api->post('addMoney', 'App\Http\Controllers\Api\Money\MoneyController@insertAllMoney');
+
+    //Auth
     $api->post('login', 'App\Http\Controllers\Api\Auth\LoginController@login');
     $api->post('register', 'App\Http\Controllers\Api\Auth\RegisterController@register');
 
+    //CheckAuth
+    $api->post("checkAuth", "App\Http\Controllers\Api\Auth\CheckController@checkAuth");
+
+    //Logout -> blacklist token
+    $api->post("logOut",'App\Http\Controllers\Api\Auth\LogOutController@logOut');
 
     //Secure
     $api->group(["middleware" => "api.auth"], function($api){
 
-        $api->get("testApi", "App\Http\Controllers\TestController@testApi");
+        //Favoris
+        $api->post("getFavoris", "App\Http\Controllers\Api\User\FavorisController@getFavoris");
+        $api->post("addFavoris", "App\Http\Controllers\Api\User\FavorisController@addFavoris");
+        $api->post("deleteFavoris", "App\Http\Controllers\Api\User\FavorisController@deleteFavoris");
+
 
     });
 

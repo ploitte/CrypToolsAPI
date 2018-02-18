@@ -29,12 +29,15 @@ class UserRepository extends DbRepository{
         return $this->entity->where("username", "=", $data["usernameEmail"])->orWhere("email", "=", $data["usernameEmail"])->first();
     }
 
-
-
     public function getUserByName($name){
-
         return $this->entity->where("username", "=", $name);
+    }
 
+    public function getById($id){
+        $user = DB::table("users")
+            ->where("id", "=", $id)
+            ->get();
+        return $user;
     }
 
 
