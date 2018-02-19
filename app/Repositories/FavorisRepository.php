@@ -21,7 +21,7 @@ class FavorisRepository extends DbRepository{
         return $favoris;
     }
 
-    public function deleteFavoris($id, $name){
+    public function deletFavoris($id, $name){
         $favoris = DB::table("favoris")
             ->where("user_id", "=", $id)
             ->where("name", "=", $name)
@@ -34,6 +34,18 @@ class FavorisRepository extends DbRepository{
                 "user_id" => $userId,
                 "name" => $moneyId
             ]);
+    }
+
+    public function checkFavExist($userId, $moneyId){
+        $favoris = DB::table("favoris")
+            ->where("user_id", "=", $userId)
+            ->where("money_id", "=", $moneyId)
+            ->first();
+        if($favoris){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 

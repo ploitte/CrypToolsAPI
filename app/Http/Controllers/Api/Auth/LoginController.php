@@ -30,7 +30,7 @@ class LoginController extends Controller
             return $this->sendLoginResponse($request, $token, $user);
         }
         return [
-            "errors" => "Username or Email incorrect."
+            "errors" => "Username/Email or password incorrect."
         ];
     }
 

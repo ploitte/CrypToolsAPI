@@ -13,24 +13,21 @@ class MoneyRepository extends DbRepository{
     }
 
     public function pushMoney($idMoney){
-
-        if(!$money){
-            DB::table("moneys")
-            ->insert([
-                "name" => $idMoney,
-            ]);
-        }
-
+        DB::table("moneys")
+        ->insert([
+            "name" => $idMoney,
+        ]);
     }
 
     public function getByName($name){
-        return $this->entity->where("name", "=", $name);
-    }
-
-    public function findMoney($idmoney){
-        
-        $money = $this->entity->where("name", "=", $idMoney);
-        return $money;
+        $money = DB::table("moneys")
+            ->where("name" ,"=", $name)
+            ->first();
+        if($money){
+            return $money;
+        }else{
+            return false;
+        }
     }
 
 }

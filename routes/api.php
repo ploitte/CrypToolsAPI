@@ -17,9 +17,19 @@ use Illuminate\Http\Request;
 $api = app('Dingo\Api\Routing\Router');
 
 
-
-
 $api->version("v1", function($api){
+
+// $api->group(['middleware' => 'cors'], function ($api) {
+
+    $pong = function () {
+        return "pong";
+    };
+
+    $api->get( '/ping', $pong );
+
+
+    //TestSansToken
+    $api->get("ping", "App\Http\Controllers\TestController@ping");
 
 
     //ForAdmin
@@ -38,14 +48,16 @@ $api->version("v1", function($api){
     //Secure
     $api->group(["middleware" => "api.auth"], function($api){
 
+        //TestAvecToken
+        $api->get("pingSecure", "App\Http\Controllers\TestController@pingSecure");
+
         //Favoris
         $api->post("getFavoris", "App\Http\Controllers\Api\User\FavorisController@getFavoris");
         $api->post("addFavoris", "App\Http\Controllers\Api\User\FavorisController@addFavoris");
         $api->post("deleteFavoris", "App\Http\Controllers\Api\User\FavorisController@deleteFavoris");
 
-
     });
-
+// });
 });
 
 

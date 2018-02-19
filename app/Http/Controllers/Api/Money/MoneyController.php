@@ -22,24 +22,20 @@ class MoneyController extends Controller
 
         $id = $request["id"];
         $moneys = $request["moneys"]; 
-
-        var_dump($request);
-        die();
-
-
         $user = $this->userRepo->getById($id);
-
 
         if($user->rights == 1){
 
-            
             foreach($moneys as $money){
 
-                // $this->moneyRepo->pushMoney($money["id"]);
+                $checkMoney = $this->moneyRepo->getByName($moneys);
 
-                return "salut";
-                
-                
+
+                if($checkMoney == false){
+                    $this->moneyRepo->pushMoney($money["id"]);
+                }else{
+                    return json_encode("Money exist");
+                }
             }   
 
         }else{

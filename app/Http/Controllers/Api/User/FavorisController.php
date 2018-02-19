@@ -5,15 +5,19 @@ namespace App\Http\Controllers\Api\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\FavorisRepository;
+use App\Repositories\MoneyRepository;
 use App\User;
 use App\Favoris;
 
 class FavorisController extends Controller
 {   
     private $favorisRepo;
+    private $moneyRepo;
 
-    public function __construct(FavorisRepository $favorisRepo){
+    public function __construct(FavorisRepository $favorisRepo, MoneyRepository $moneyRepo){
         $this->favorisRepo = $favorisRepo;
+        $this->moneyRepo = $moneyRepo;
+
     }
 
     public function getFavoris(Request $request){
@@ -28,17 +32,16 @@ class FavorisController extends Controller
 
     public function addFavoris(Request $request){
 
-        // $id = $request["id"];
-        // $name = $request["name"];
+        $id = $request["id"];
+        $name = $request["name"];
+        $money =$this->moneyRepo->getByName($name);
+        $favoris = $this->favorisRepo->checkFavExist($id, $money->id);
 
-        // $user = $this->userRepo->getById($îd);
-        // $money = $this->moneyRepo->getByName($name);
-
-        //getMoneyByname
-        //getUserbyId
-        //Create favoris
-
-
+        if(!$favoris){
+            $this->createFavoris($id, $money->id);
+        }else{
+            return json_encode("Favoris exist");
+        }       
 
     }
 

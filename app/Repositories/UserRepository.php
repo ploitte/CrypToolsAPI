@@ -34,10 +34,10 @@ class UserRepository extends DbRepository{
     }
 
     public function getById($id){
-        $user = DB::table("users")
+        return DB::table("users")
             ->where("id", "=", $id)
-            ->get();
-        return $user;
+            ->first();
+      
     }
 
 
