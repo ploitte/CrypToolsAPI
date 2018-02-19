@@ -22,11 +22,14 @@ class FavorisController extends Controller
 
     public function getFavoris(Request $request){
 
-        $favoris = $this->favorisRepo->getFavoris($request->id);
+        $id = $request["id"];
+        $favoris = $this->favorisRepo->getFavoris($id);
 
-        // $user = User::find(1)->favoris;
-
-        return $favoris;
+        if(!$favoris){
+            return json_encode("Pas de favoris");
+        }else{
+            return $favoris;
+        }
 
     }
 
@@ -34,22 +37,33 @@ class FavorisController extends Controller
 
         $id = $request["id"];
         $name = $request["name"];
-        $money =$this->moneyRepo->getByName($name);
-        $favoris = $this->favorisRepo->checkFavExist($id, $money->id);
 
-        if(!$favoris){
-            $this->createFavoris($id, $money->id);
+        $favoris = $this->favorisRepo->checkFavExist($id, $name);
+
+
+
+        if(is_numeric($favoris)){
+            $this->favorisRepo->createFavoris($id, $favoris);
+            return json_encode("Favoris added");
         }else{
             return json_encode("Favoris exist");
         }       
-
     }
 
     public function deleteFavoris(Request $request){
 
-        $this->favorisRepo->deleteFavoris($request["id"], $request["name"]);
+        
+            $id = $request["id"];
+            $name = $request["name"];
 
-        return $request;
+            $favoris = $this->favorisRepo->checkFavExist($id, $name);
+
+            if(!is_numeric($favoris)){
+                $this->favorisRepo->deleteFavoris($id, $favoris->money_id);
+                return json_encode("Favoris deleted");
+            }else{
+                return json_encode("Ce favoris n'existe pas");
+            }  
     }
 
 

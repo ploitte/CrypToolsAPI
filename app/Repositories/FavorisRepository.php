@@ -12,40 +12,54 @@ class FavorisRepository extends DbRepository{
         $this->entity = $favoris;
     }
 
-    public function getFavoris($id){
-        $favoris = DB::table("favoris")
-            ->where("user_id", "=", $id)
-            ->select("favoris.name")
-            ->get();
-
-        return $favoris;
-    }
-
-    public function deletFavoris($id, $name){
-        $favoris = DB::table("favoris")
-            ->where("user_id", "=", $id)
-            ->where("name", "=", $name)
-            ->delete();
-    }
 
     public function createFavoris($userId, $moneyId){
         DB::table("favoris")
             ->insert([
                 "user_id" => $userId,
-                "name" => $moneyId
+                "money_id" => $moneyId
             ]);
     }
 
-    public function checkFavExist($userId, $moneyId){
+    public function getFavoris($id){
+            $favoris = DB::table("favoris")
+                ->where("user_id" ,"=", $id)
+                ->join("moneys", function($join) use($id){
+                  $join->on("moneys.id", "=", "favoris.money_id");
+                })->orderBy("favoris.money_id", 'asc')
+                ->get(); 
+
+            if($favoris){
+                return $favoris;
+            }else{
+                return false;
+            }
+    }
+
+    public function deleteFavoris($id, $name){
         $favoris = DB::table("favoris")
-            ->where("user_id", "=", $userId)
-            ->where("money_id", "=", $moneyId)
-            ->first();
-        if($favoris){
-            return true;
-        }else{
-            return false;
-        }
+            ->where("user_id", "=", $id)
+            ->where("money_id", "=", $name)
+            ->delete();
+    }
+
+    public function checkFavExist($userId, $moneyName){
+
+            $favoris = DB::table("favoris")
+                ->where("user_id" ,"=", $userId)
+                ->join("moneys", function($join) use($moneyName){
+                    $join->on("moneys.id", "=", "favoris.money_id")
+                    ->where("moneys.name", "=", $moneyName);
+                })->first();
+
+                if($favoris){
+                    return $favoris;
+                }else{
+                    $money = DB::table("moneys")
+                        ->where("name", "=", $moneyName)
+                        ->first();
+                    return $money->id;
+                }
     }
 
 

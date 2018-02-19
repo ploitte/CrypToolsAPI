@@ -19,23 +19,25 @@ class MoneyController extends Controller
     }
 
     public function insertAllMoney(Request $request){
+        
+
+
 
         $id = $request["id"];
         $moneys = $request["moneys"]; 
+
+ 
         $user = $this->userRepo->getById($id);
 
-        if($user->rights == 1){
 
+        if($user->rights == 1){
+            
             foreach($moneys as $money){
 
-                $checkMoney = $this->moneyRepo->getByName($moneys);
+                $checkMoney = $this->moneyRepo->getByName($money["id"]);
 
-
-                if($checkMoney == false){
-                    $this->moneyRepo->pushMoney($money["id"]);
-                }else{
-                    return json_encode("Money exist");
-                }
+                $this->moneyRepo->pushMoney($money["id"]);    
+                      
             }   
 
         }else{

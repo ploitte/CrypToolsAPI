@@ -31,7 +31,6 @@ $api->version("v1", function($api){
     //TestSansToken
     $api->get("ping", "App\Http\Controllers\TestController@ping");
 
-
     //ForAdmin
     $api->post('addMoney', 'App\Http\Controllers\Api\Money\MoneyController@insertAllMoney');
 
