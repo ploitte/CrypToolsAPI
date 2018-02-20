@@ -29,10 +29,10 @@ class FavorisRepository extends DbRepository{
                 })->orderBy("favoris.money_id", 'asc')
                 ->get(); 
 
-            if($favoris){
+            if(count($favoris) != 0){
                 return $favoris;
             }else{
-                return false;
+                return json_encode("empty");
             }
     }
 

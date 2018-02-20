@@ -25,12 +25,8 @@ class FavorisController extends Controller
         $id = $request["id"];
         $favoris = $this->favorisRepo->getFavoris($id);
 
-        if(!$favoris){
-            return json_encode("Pas de favoris");
-        }else{
-            return $favoris;
-        }
-
+        return $favoris;
+        
     }
 
     public function addFavoris(Request $request){
