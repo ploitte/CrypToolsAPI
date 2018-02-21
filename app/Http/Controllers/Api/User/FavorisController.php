@@ -23,6 +23,7 @@ class FavorisController extends Controller
     public function getFavoris(Request $request){
 
         $id = $request["id"];
+
         $favoris = $this->favorisRepo->getFavoris($id);
 
         return $favoris;
@@ -36,18 +37,15 @@ class FavorisController extends Controller
 
         $favoris = $this->favorisRepo->checkFavExist($id, $name);
 
-
-
         if(is_numeric($favoris)){
             $this->favorisRepo->createFavoris($id, $favoris);
-            return json_encode("Favoris added");
+            return json_encode("added");
         }else{
-            return json_encode("Favoris exist");
+            return json_encode("exist");
         }       
     }
 
     public function deleteFavoris(Request $request){
-
         
             $id = $request["id"];
             $name = $request["name"];
@@ -56,9 +54,9 @@ class FavorisController extends Controller
 
             if(!is_numeric($favoris)){
                 $this->favorisRepo->deleteFavoris($id, $favoris->money_id);
-                return json_encode("Favoris deleted");
+                return json_encode("deleted");
             }else{
-                return json_encode("Ce favoris n'existe pas");
+                return json_encode("noexist");
             }  
     }
 

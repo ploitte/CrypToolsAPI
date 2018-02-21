@@ -19,16 +19,10 @@ class MoneyController extends Controller
     }
 
     public function insertAllMoney(Request $request){
-        
-
-
 
         $id = $request["id"];
         $moneys = $request["moneys"]; 
-
- 
         $user = $this->userRepo->getById($id);
-
 
         if($user->rights == 1){
             
@@ -36,9 +30,8 @@ class MoneyController extends Controller
 
                 $checkMoney = $this->moneyRepo->getByName($money["id"]);
 
-                $this->moneyRepo->pushMoney($money["id"]);    
-                      
-            }   
+                $this->moneyRepo->pushMoney($money["id"]);                        
+            }  
 
         }else{
             return [

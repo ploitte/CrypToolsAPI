@@ -62,6 +62,4 @@ class FavorisRepository extends DbRepository{
                 }
     }
 
-
-
 }
