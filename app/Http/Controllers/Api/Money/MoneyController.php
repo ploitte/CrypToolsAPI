@@ -23,19 +23,34 @@ class MoneyController extends Controller
         $id = $request["id"];
         $moneys = $request["moneys"]; 
         $user = $this->userRepo->getById($id);
+        $flag = false;
 
         if($user->rights == 1){
             
             foreach($moneys as $money){
 
                 $checkMoney = $this->moneyRepo->getByName($money["id"]);
-
-                $this->moneyRepo->pushMoney($money["id"]);                        
+                if(!$checkMoney){
+                    $flag = true;
+                    $this->moneyRepo->pushMoney($money["id"]);
+                }                  
             }  
 
         }else{
             return [
                 "message" => "No Rights!",
+                "status_code" => 666
+            ];
+        }
+
+        if($flag){
+            return [
+                "message" => "added",
+                "status_code" => 111
+            ];
+        }else{
+            return [
+                "message" => "exist",
                 "status_code" => 666
             ];
         }
